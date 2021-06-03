@@ -161,7 +161,7 @@
       <div class="content py-3">
         <b-row class="font-size-sm">
           <b-col sm="6" order-sm="2" class="py-1 text-center text-sm-right">
-            Crafted with <i class="fa fa-heart text-danger"></i> by
+            Creado con <i class="fa fa-heart text-danger"></i> por
             <a
               class="font-w600"
               href="https://1.envato.market/5Noyb"

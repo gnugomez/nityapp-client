@@ -15,11 +15,9 @@ import LayoutSimple from "@/layouts/variations/Simple.vue";
 // Register Vue Router
 Vue.use(Router);
 
-// Frontend Page Example
 const Landing = () => import("@/views/Landing.vue");
-
-// Backend Page Example
 const Dashboard = () => import("@/views/Dashboard.vue");
+const Entrega = () => import("@/views/Entrega.vue");
 
 const routes = [
   {
@@ -38,12 +36,17 @@ const routes = [
     path: "/backend",
     redirect: "/backend/dashboard",
     component: LayoutBackend,
+    beforeEnter: authGuard,
     children: [
       {
         path: "dashboard",
         name: "Dashboard",
         component: Dashboard,
-        beforeEnter: authGuard,
+      },
+      {
+        path: "entrega",
+        name: "Entrega",
+        component: Entrega,
       },
     ],
   },

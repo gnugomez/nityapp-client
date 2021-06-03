@@ -83,7 +83,7 @@
           <base-navigation
             :nodes="[
               {
-                name: 'Panel de control',
+                name: 'Dashboard',
                 to: '/backend/dashboard',
                 icon: 'si si-speedometer',
               },
@@ -93,7 +93,7 @@
                 icon: 'fas fa-box',
               },
               {
-                name: 'More',
+                name: 'Otros',
                 heading: true,
               },
               {

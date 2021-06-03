@@ -1,30 +1,59 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+/*
+ * Starter Router
+ */
 
-Vue.use(VueRouter);
+// Vue and Vue Router
+import Vue from "vue";
+import Router from "vue-router";
+
+// Main layouts
+import LayoutBackend from "@/layouts/variations/BackendStarter.vue";
+import LayoutSimple from "@/layouts/variations/Simple.vue";
+
+// Register Vue Router
+Vue.use(Router);
+
+// Frontend Page Example
+const Landing = () => import("@/views/Landing.vue");
+
+// Backend Page Example
+const Dashboard = () => import("@/views/Dashboard.vue");
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home,
+    redirect: "/landing",
+    component: LayoutSimple,
+    children: [
+      {
+        path: "/landing",
+        name: "Landing",
+        component: Landing,
+      },
+    ],
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/backend",
+    redirect: "/backend/dashboard",
+    component: LayoutBackend,
+    children: [
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        component: Dashboard,
+      },
+    ],
   },
 ];
 
-const router = new VueRouter({
+// Router Configuration
+export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
+  linkActiveClass: "active",
+  linkExactActiveClass: "",
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
   routes,
 });
-
-export default router;

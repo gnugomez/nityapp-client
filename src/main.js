@@ -17,8 +17,27 @@ import BaseNavigation from "@/components/BaseNavigation";
 import clickRipple from "@/directives/clickRipple";
 import toggleClass from "@/directives/toggleClass";
 
+// Import the Auth0 configuration
+import { domain, clientId } from "../auth_config.json";
+
+// Import the plugin here
+import { Auth0Plugin } from "./auth";
+
 // Register global plugins
 Vue.use(BootstrapVue);
+
+// Install the authentication plugin here
+Vue.use(Auth0Plugin, {
+  domain,
+  clientId,
+  onRedirectCallback: (appState) => {
+    router.push(
+      appState && appState.targetUrl
+        ? appState.targetUrl
+        : window.location.pathname
+    );
+  },
+});
 
 // Register global components
 Vue.component(BaseLayoutModifier.name, BaseLayoutModifier);

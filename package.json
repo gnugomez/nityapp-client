@@ -9,6 +9,7 @@
     "pretty": "prettier --write '**/*.vue'"
   },
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.15.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",

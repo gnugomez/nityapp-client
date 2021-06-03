@@ -17,9 +17,9 @@
 
         <!-- User Info -->
         <div class="ml-2">
-          <a class="text-dark font-w600" href="javascript:void(0)"
-            >Manuel Garcia Gordo</a
-          >
+          <a class="text-dark font-w600" href="javascript:void(0)">{{
+            $auth.user.name
+          }}</a>
         </div>
         <!-- END User Info -->
 
@@ -38,7 +38,7 @@
 
       <!-- Side Content -->
       <div class="content-side">
-        <p>No tienes notificaciones pendientes.</p>
+        <p>No tienes tareas pendientes.</p>
       </div>
     </template>
     <!-- END Side Overlay Content -->
@@ -86,6 +86,11 @@
                 name: 'Panel de control',
                 to: '/backend/dashboard',
                 icon: 'si si-speedometer',
+              },
+              {
+                name: 'Entregar pedido',
+                to: '/backend/entrega',
+                icon: 'fas fa-box',
               },
               {
                 name: 'More',
@@ -138,6 +143,146 @@
 
         <!-- Right Section -->
         <div class="d-flex align-items-center">
+          <!-- User Dropdown -->
+          <b-dropdown
+            size="sm"
+            variant="dual"
+            class="d-inline-block ml-2"
+            menu-class="p-0 border-0 dropdown-menu-md"
+            right
+            no-caret
+            ref="oneDropdownDefaultUser"
+          >
+            <template #button-content>
+              <div class="d-flex align-items-center">
+                <img
+                  class="rounded-circle"
+                  src="../../assets/img/avatar10.png"
+                  alt="Header Avatar"
+                  style="width: 21px"
+                />
+                <i
+                  class="
+                    fa fa-fw fa-angle-down
+                    d-none d-sm-inline-block
+                    ml-1
+                    mt-1
+                  "
+                ></i>
+              </div>
+            </template>
+            <li @click="$refs.oneDropdownDefaultUser.hide(true)">
+              <div class="p-3 text-center bg-primary-dark rounded-top">
+                <img
+                  class="img-avatar img-avatar48 img-avatar-thumb"
+                  src="../../assets/img/avatar10.png"
+                  alt="Avatar"
+                />
+                <p class="mt-2 mb-0 text-white font-w500">
+                  {{ $auth.user.name.replace(/ .*/, "") }}
+                </p>
+                <p class="mb-0 text-white-50 font-size-sm">Administrador</p>
+              </div>
+              <div class="p-2">
+                <a
+                  class="
+                    dropdown-item
+                    d-flex
+                    align-items-center
+                    justify-content-between
+                  "
+                  href="javascript:void(0)"
+                >
+                  <span class="font-size-sm font-w500">Ajustes</span>
+                </a>
+                <div role="separator" class="dropdown-divider"></div>
+                <router-link
+                  class="
+                    dropdown-item
+                    d-flex
+                    align-items-center
+                    justify-content-between
+                  "
+                  to="/auth/lock"
+                >
+                  <span class="font-size-sm font-w500">Bloquear cuenta</span>
+                </router-link>
+                <b-button
+                  class="
+                    dropdown-item
+                    d-flex
+                    align-items-center
+                    justify-content-between
+                  "
+                  @click="logout"
+                >
+                  <span class="font-size-sm font-w500">Cerrar sesión</span>
+                </b-button>
+              </div>
+            </li>
+          </b-dropdown>
+          <!-- END User Dropdown -->
+
+          <!-- Notifications Dropdown -->
+          <b-dropdown
+            size="sm"
+            variant="dual"
+            class="d-inline-block ml-2"
+            menu-class="dropdown-menu-lg p-0 border-0 font-size-sm"
+            right
+            no-caret
+          >
+            <template #button-content>
+              <i class="fa fa-fw fa-bell"></i>
+              <span v-if="notifications.length" class="text-primary">•</span>
+            </template>
+            <li>
+              <div class="p-2 bg-primary-dark text-center rounded-top">
+                <h5 class="dropdown-header text-uppercase text-white">
+                  Notificaciones
+                </h5>
+              </div>
+              <ul class="nav-items mb-0">
+                <li
+                  v-for="(notification, index) in notifications"
+                  :key="`notification-${index}`"
+                >
+                  <a
+                    class="text-dark media py-2"
+                    :href="`${notification.href}`"
+                  >
+                    <div class="mr-2 ml-3">
+                      <i :class="`${notification.icon}`"></i>
+                    </div>
+                    <div class="media-body pr-2">
+                      <div class="font-w600">{{ notification.title }}</div>
+                      <span class="font-w500 text-muted">{{
+                        notification.time
+                      }}</span>
+                    </div>
+                  </a>
+                </li>
+                <li v-if="!notifications.length" class="p-2">
+                  <b-alert variant="warning" class="text-center m-0" show>
+                    <p class="mb-0">No tienes notificaciones pendientes</p>
+                  </b-alert>
+                </li>
+              </ul>
+              <div v-if="notifications.length" class="p-2 border-top">
+                <b-button
+                  size="sm"
+                  variant="light"
+                  class="text-center"
+                  block
+                  href="javascript:void(0)"
+                >
+                  <i class="fa fa-fw fa-arrow-down mr-1"></i> Leer más...
+                </b-button>
+              </div>
+            </li>
+          </b-dropdown>
+          <!-- END Notifications Dropdown -->
+
           <!-- Toggle Side Overlay -->
           <base-layout-modifier
             action="sideOverlayToggle"
@@ -206,7 +351,52 @@ export default {
         header: "",
         footer: "",
       },
+      notifications: [
+        {
+          href: "javascript:void(0)",
+          icon: "fa fa-fw fa-check-circle text-success",
+          title: "You have a new follower",
+          time: "15 min ago",
+        },
+        {
+          href: "javascript:void(0)",
+          icon: "fa fa-fw fa-plus-circle text-primary",
+          title: "1 new sale, keep it up",
+          time: "22 min ago",
+        },
+        {
+          href: "javascript:void(0)",
+          icon: "fa fa-fw fa-times-circle text-danger",
+          title: "Update failed, restart server",
+          time: "26 min ago",
+        },
+        {
+          href: "javascript:void(0)",
+          icon: "fa fa-fw fa-plus-circle text-primary",
+          title: "2 new sales, keep it up",
+          time: "33 min ago",
+        },
+        {
+          href: "javascript:void(0)",
+          icon: "fa fa-fw fa-user-plus text-success",
+          title: "You have a new subscriber",
+          time: "41 min ago",
+        },
+        {
+          href: "javascript:void(0)",
+          icon: "fa fa-fw fa-check-circle text-success",
+          title: "You have a new follower",
+          time: "42 min ago",
+        },
+      ],
     };
+  },
+  methods: {
+    logout() {
+      this.$auth.logout({
+        returnTo: window.location.origin,
+      });
+    },
   },
   created() {
     // Set default elements for this layout

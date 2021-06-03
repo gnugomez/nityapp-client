@@ -6,6 +6,8 @@
 import Vue from "vue";
 import Router from "vue-router";
 
+import { authGuard } from "../auth/authGuard";
+
 // Main layouts
 import LayoutBackend from "@/layouts/variations/BackendStarter.vue";
 import LayoutSimple from "@/layouts/variations/Simple.vue";
@@ -41,6 +43,7 @@ const routes = [
         path: "dashboard",
         name: "Dashboard",
         component: Dashboard,
+        beforeEnter: authGuard,
       },
     ],
   },

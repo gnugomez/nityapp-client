@@ -17,8 +17,10 @@
             <h1 class="h3 font-w700 mb-2">Panel de control</h1>
             <h2 class="h6 font-w500 text-muted mb-0">
               Bienvenido
-              <a class="font-w600" href="javascript:void(0)">Manuel</a>, no
-              tienes notificaciones pendientes.
+              <a class="font-w600" href="javascript:void(0)">{{
+                $auth.user.name.replace(/ .*/, "")
+              }}</a
+              >, no tienes tareas pendientes.
             </h2>
           </div>
           <div class="mt-3 mt-sm-0 ml-sm-3">
@@ -127,7 +129,7 @@
       <!-- END Stats -->
 
       <b-row class="row-deck">
-        <b-col xl="6">
+        <b-col xl="12">
           <!-- Borderless Table -->
           <base-block rounded title="Entregas recientes">
             <template #options>
